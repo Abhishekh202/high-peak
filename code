@@ -1,0 +1,44 @@
+
+g = dict()                                                                        
+input_file = open('input.txt','r')                                              
+for line in input_file:                                                             
+    if line != '\n':                                                               
+        a = line.split(":")                                                         #separate names of goodies and their cost
+        a[1] = a[1][1:]                                                            
+        if a[1] != "":                                                              #remove lines which have no value
+            if a[1][-1] == "\n":                                                
+                a[1] = a[1][:-1]
+            g[a[0]] = int(a[1])                                                     #add the name of goodies and their cost as integer to dictionery
+            
+input_file.close()                                                              
+
+
+m = g["Number of employees"]                                                        
+del g["Number of employees"]                                                        
+
+
+s_v = sorted(g.values())                                                           
+l=len(s_v)                                                                        
+min = s_v[-1] - s_v[0]                                                            
+f=0                                                                                 #f is used to store the index of the goodie with the lowest cost
+for i in range((l-m)+1):                                                            #traverse through the costs
+    k = s_v[i+(m-1)] - s_v[i]                                                       #calculate difference between max and min
+    if k<min:                                                                       #check if difference is lowest
+        min=k                                                                      
+        f=i                                                                         #also update f to store the index where min cost was found
+
+        
+output_file = open('output.txt','w')                                                     
+output_file.write("The goodies selected for distribution are:\n")                   
+output_file.write("\n")
+for i in range(f,f+m):                                                              
+    for j in g.keys():                                                                                                                         
+        if g[j] == s_v[i]:                                                         
+            output_file.write(j+": ")                                               
+            output_file.write(str(g[j]))                                            
+            output_file.write("\n")
+            break
+output_file.write("\n")
+output_file.write("And the difference between the chosen goodie with highest price and the lowest price is ")
+output_file.write(str(min))                                                         
+output_file.close()
